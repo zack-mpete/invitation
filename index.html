@@ -106,7 +106,6 @@
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         animation: fadeIn 1s ease-out, float 3s ease-in-out infinite;
         margin-bottom: 20px;
-
         font-family: "Dancing Script", cursive;
         font-optical-sizing: auto;
         font-weight: 400;
@@ -171,11 +170,11 @@
         animation-delay: 1.8s;
         color: var(--love-light);
         font-weight: bold;
-
         font-family: "Dancing Script", cursive;
         font-optical-sizing: auto;
         font-weight: 400;
         font-style: normal;
+        font-size: 2rem;
       }
 
       /* Boutons */
@@ -211,6 +210,7 @@
       .btn-map {
         background-color: var(--love-primary);
         color: var(--text-color);
+        text-decoration: none;
       }
 
       button:hover,
@@ -225,14 +225,13 @@
             rgba(45, 52, 54, 0.8),
             rgba(45, 52, 54, 0.8)
           ),
-          url("assets/bg-2.jpg") center/cover no-repeat;
+          url("assets/photo_2025-06-04_19-11-37.jpg") center/cover no-repeat;
       }
 
       .livre-d-or h1 {
         font-size: clamp(1.8rem, 7vw, 2.8rem);
         margin-bottom: 15px;
         color: var(--love-light);
-
         font-family: "Dancing Script", cursive;
         font-optical-sizing: auto;
         font-weight: 400;
@@ -291,6 +290,39 @@
           padding: 10px 12px;
         }
       }
+
+      /* Style pour le loader */
+      .pdf-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        color: white;
+        font-size: 1.2rem;
+      }
+
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: var(--love-primary);
+        animation: spin 1s ease-in-out infinite;
+        margin-bottom: 15px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
     </style>
   </head>
   <body>
@@ -337,79 +369,122 @@
     <!-- Bibliothèques pour génération PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
 
     <script>
-      // Solution PDF optimisée pour toute la page
+      // Fonction pour afficher le loader
+      function showLoader() {
+        const loader = document.createElement("div");
+        loader.className = "pdf-loader";
+        loader.innerHTML = `
+          <div class="spinner"></div>
+          <p>Génération du PDF en cours...</p>
+          <p>Veuillez patienter</p>
+        `;
+        document.body.appendChild(loader);
+        return loader;
+      }
+
+      // Fonction pour cacher le loader
+      function hideLoader(loader) {
+        if (loader && loader.parentNode) {
+          loader.parentNode.removeChild(loader);
+        }
+      }
+
+      // Solution PDF optimisée
       document
         .querySelector(".btn-download")
         .addEventListener("click", async function () {
+          const loader = showLoader();
+          let timeout = setTimeout(() => {
+            if (loader && loader.querySelector("p:last-child")) {
+              loader.querySelector("p:last-child").textContent =
+                "La génération prend plus de temps que prévu... Veuillez patienter";
+            }
+          }, 5000);
+
           try {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF("p", "mm", "a4");
 
-            // Créer un clone du contenu principal
+            // 1. Créer un clone du contenu
             const element = document.querySelector("main");
             const clone = element.cloneNode(true);
             clone.style.width = "210mm";
-            clone.style.overflow = "visible";
             clone.style.position = "absolute";
             clone.style.left = "-9999px";
             document.body.appendChild(clone);
 
-            // Options avancées pour html2canvas
+            // 2. Options avancées pour la capture
             const options = {
-              scale: 3, // Haute résolution
-              logging: false,
+              scale: 2, // Qualité élevée
+              logging: true,
               useCORS: true,
               allowTaint: true,
               scrollX: 0,
               scrollY: 0,
               windowWidth: clone.scrollWidth,
               windowHeight: clone.scrollHeight,
+              onclone: (clonedDoc) => {
+                // Assure que tous les textes sont visibles
+                const texts = clonedDoc.querySelectorAll(
+                  "p, h1, h2, h3, span, div"
+                );
+                texts.forEach((text) => {
+                  text.style.opacity = "1";
+                  text.style.visibility = "visible";
+                });
+              },
             };
 
-            // Capture avec html2canvas
+            // 3. Capture avec html2canvas
             const canvas = await html2canvas(clone, options);
             document.body.removeChild(clone);
 
-            // Calcul des dimensions pour le PDF
+            // 4. Génération du PDF
             const imgData = canvas.toDataURL("image/png", 1.0);
-            const imgWidth = doc.internal.pageSize.getWidth();
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            const pdfWidth = doc.internal.pageSize.getWidth();
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-            // Ajout au PDF avec gestion multi-pages
-            let heightLeft = imgHeight;
+            let heightLeft = pdfHeight;
             let position = 0;
+            const pageHeight = doc.internal.pageSize.getHeight() - 20;
 
-            doc.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-            heightLeft -= doc.internal.pageSize.getHeight();
+            doc.addImage(
+              imgData,
+              "PNG",
+              10,
+              position,
+              pdfWidth - 20,
+              pdfHeight
+            );
+            heightLeft -= pageHeight;
 
+            // Ajout de pages supplémentaires si nécessaire
             while (heightLeft >= 0) {
-              position = heightLeft - imgHeight;
+              position = heightLeft - pdfHeight;
               doc.addPage();
-              doc.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-              heightLeft -= doc.internal.pageSize.getHeight();
+              doc.addImage(
+                imgData,
+                "PNG",
+                10,
+                position,
+                pdfWidth - 20,
+                pdfHeight
+              );
+              heightLeft -= pageHeight;
             }
 
-            // Sauvegarde du PDF
-            doc.save("Invitation_Complete_Gucci_Mutu.pdf");
+            // 5. Sauvegarde
+            doc.save("Invitation_Gucci_Mutu.pdf");
           } catch (error) {
             console.error("Erreur de génération PDF:", error);
-            alert("Une erreur est survenue lors de la génération du PDF");
-
-            // Solution de secours avec dom-to-image
-            try {
-              const { jsPDF } = window.jspdf;
-              const dataUrl = await domtoimage.toPng(
-                document.querySelector("main")
-              );
-              const pdf = new jsPDF();
-              pdf.addImage(dataUrl, "PNG", 0, 0);
-              pdf.save("Invitation_Backup.pdf");
-            } catch (fallbackError) {
-              console.error("Erreur de secours:", fallbackError);
-            }
+            alert(
+              "Erreur lors de la génération du PDF. Veuillez réessayer ou vérifier votre connexion."
+            );
+          } finally {
+            clearTimeout(timeout);
+            hideLoader(loader);
           }
         });
 
