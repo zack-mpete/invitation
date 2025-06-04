@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Playwrite+VN:wght@100..400&display=swap"
+      rel="stylesheet"
+    />
+    <title>Invitation - Gucci & Mutu</title>
+    <style>
+      :root {
+        --love-primary: #e84393;
+        --love-secondary: #fd79a8;
+        --love-dark: #c0392b;
+        --love-light: #ffeaa7;
+        --text-color: #f5f6fa;
+        --bg-dark: #2d3436;
+        --transition: all 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes heartBeat {
+        0% {
+          transform: scale(1);
+        }
+        14% {
+          transform: scale(1.3);
+        }
+        28% {
+          transform: scale(1);
+        }
+        42% {
+          transform: scale(1.3);
+        }
+        70% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--bg-dark);
+        overflow-x: hidden;
+      }
+
+      main {
+        width: 100%;
+        max-width: 100vw;
+        overflow: hidden;
+      }
+
+      section {
+        padding: 40px 20px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+
+      /* Section Couple */
+      .couple {
+        background: linear-gradient(
+            rgba(45, 52, 54, 0.7),
+            rgba(45, 52, 54, 0.7)
+          ),
+          url("assets/bg-couple.jpg") center/cover no-repeat;
+        text-align: center;
+        justify-content: space-between;
+      }
+
+      .couple h1 {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        animation: fadeIn 1s ease-out, float 3s ease-in-out infinite;
+        margin-bottom: 20px;
+
+        font-family: "Dancing Script", cursive;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      .couple h2 {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        animation: fadeIn 1.5s ease-out;
+      }
+
+      .conteneur-texte {
+        background: linear-gradient(
+            rgba(45, 52, 54, 0.8),
+            rgba(45, 52, 54, 0.8)
+          ),
+          url("assets/bg-1.jpg") center/cover no-repeat;
+      }
+
+      .conteneur-texte header {
+        color: var(--love-primary);
+        margin: 15px 0;
+        font-size: clamp(1rem, 4vw, 1.3rem);
+        font-weight: bold;
+        animation: fadeIn 1s ease-out;
+      }
+
+      .texte {
+        width: 95%;
+        max-width: 500px;
+        padding: 20px;
+        margin: 15px 0;
+        background-color: rgba(45, 52, 54, 0.85);
+        border: 1px solid var(--love-light);
+        border-radius: 10px;
+      }
+
+      .texte p {
+        margin: 12px 0;
+        font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+
+      .texte p:nth-child(1) {
+        animation-delay: 0.3s;
+      }
+      .texte p:nth-child(2) {
+        animation-delay: 0.6s;
+      }
+      .texte p:nth-child(3) {
+        animation-delay: 0.9s;
+      }
+      .texte p:nth-child(4) {
+        animation-delay: 1.2s;
+      }
+      .texte p:nth-child(5) {
+        animation-delay: 1.5s;
+      }
+      .texte p:nth-child(6) {
+        animation-delay: 1.8s;
+        color: var(--love-light);
+        font-weight: bold;
+
+        font-family: "Dancing Script", cursive;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      /* Boutons */
+      button,
+      .btn {
+        cursor: pointer;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+        margin: 10px 0;
+        width: auto;
+        min-width: 180px;
+      }
+
+      .btn-download {
+        background-color: var(--love-dark);
+        color: var(--text-color);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-whatsapp {
+        background-color: #25d366;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-map {
+        background-color: var(--love-primary);
+        color: var(--text-color);
+      }
+
+      button:hover,
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Section Livre d'or */
+      .livre-d-or {
+        background: linear-gradient(
+            rgba(45, 52, 54, 0.8),
+            rgba(45, 52, 54, 0.8)
+          ),
+          url("assets/bg-2.jpg") center/cover no-repeat;
+      }
+
+      .livre-d-or h1 {
+        font-size: clamp(1.8rem, 7vw, 2.8rem);
+        margin-bottom: 15px;
+        color: var(--love-light);
+
+        font-family: "Dancing Script", cursive;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      .livre-d-or h3 {
+        font-size: clamp(1rem, 4vw, 1.3rem);
+        margin-bottom: 30px;
+        font-weight: normal;
+      }
+
+      .livre-d-or textarea {
+        width: 95%;
+        max-width: 500px;
+        min-height: 40vh;
+        padding: 15px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--love-light);
+        border-radius: 10px;
+        color: var(--text-color);
+        font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+        resize: vertical;
+        margin-bottom: 20px;
+        text-align: left;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+        line-height: 1.6;
+        font-family: inherit;
+      }
+
+      .livre-d-or textarea::placeholder {
+        color: rgba(245, 246, 250, 0.7);
+        text-align: left;
+        opacity: 1;
+      }
+
+      /* Optimisation mobile */
+      @media (max-width: 480px) {
+        section {
+          padding: 30px 15px;
+        }
+
+        .texte {
+          padding: 15px;
+        }
+
+        button,
+        .btn {
+          padding: 10px 20px;
+          min-width: 160px;
+        }
+
+        .livre-d-or textarea {
+          min-height: 35vh;
+          padding: 10px 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="couple">
+        <h1>Gucci & Mutu 💞</h1>
+        <h2>1 mai 2026</h2>
+      </section>
+
+      <section class="conteneur-texte">
+        <header>Mr ............ ou Mme.......</header>
+        <div class="texte">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae
+            repudiandae exercitationem aliquid saepe voluptatem explicabo, odit
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic
+            sapiente nesciunt, a fugit laudantium laborum ipsam, sunt corrupti
+          </p>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus,
+            ipsum fugiat.
+          </p>
+          <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error
+            molestias quaerat libero fugiat autem harum!
+          </p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+          <p>Gucci & Mutu 💞</p>
+          <button class="btn-download">📥 Télécharger</button>
+        </div>
+        <a href="#" class="btn btn-map">🗺️ Afficher la carte</a>
+      </section>
+
+      <section class="livre-d-or">
+        <h1>Livre d'or</h1>
+        <h3>Laissez un petit mot au couple</h3>
+        <textarea placeholder="Écrivez votre message ici..."></textarea>
+        <button class="btn-whatsapp">💌 Envoyer via WhatsApp</button>
+      </section>
+    </main>
+
+    <!-- Bibliothèques pour génération PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+
+    <script>
+      // Solution PDF optimisée pour toute la page
+      document
+        .querySelector(".btn-download")
+        .addEventListener("click", async function () {
+          try {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF("p", "mm", "a4");
+
+            // Créer un clone du contenu principal
+            const element = document.querySelector("main");
+            const clone = element.cloneNode(true);
+            clone.style.width = "210mm";
+            clone.style.overflow = "visible";
+            clone.style.position = "absolute";
+            clone.style.left = "-9999px";
+            document.body.appendChild(clone);
+
+            // Options avancées pour html2canvas
+            const options = {
+              scale: 3, // Haute résolution
+              logging: false,
+              useCORS: true,
+              allowTaint: true,
+              scrollX: 0,
+              scrollY: 0,
+              windowWidth: clone.scrollWidth,
+              windowHeight: clone.scrollHeight,
+            };
+
+            // Capture avec html2canvas
+            const canvas = await html2canvas(clone, options);
+            document.body.removeChild(clone);
+
+            // Calcul des dimensions pour le PDF
+            const imgData = canvas.toDataURL("image/png", 1.0);
+            const imgWidth = doc.internal.pageSize.getWidth();
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            // Ajout au PDF avec gestion multi-pages
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            doc.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+            heightLeft -= doc.internal.pageSize.getHeight();
+
+            while (heightLeft >= 0) {
+              position = heightLeft - imgHeight;
+              doc.addPage();
+              doc.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+              heightLeft -= doc.internal.pageSize.getHeight();
+            }
+
+            // Sauvegarde du PDF
+            doc.save("Invitation_Complete_Gucci_Mutu.pdf");
+          } catch (error) {
+            console.error("Erreur de génération PDF:", error);
+            alert("Une erreur est survenue lors de la génération du PDF");
+
+            // Solution de secours avec dom-to-image
+            try {
+              const { jsPDF } = window.jspdf;
+              const dataUrl = await domtoimage.toPng(
+                document.querySelector("main")
+              );
+              const pdf = new jsPDF();
+              pdf.addImage(dataUrl, "PNG", 0, 0);
+              pdf.save("Invitation_Backup.pdf");
+            } catch (fallbackError) {
+              console.error("Erreur de secours:", fallbackError);
+            }
+          }
+        });
+
+      // Envoyer message WhatsApp
+      document
+        .querySelector(".btn-whatsapp")
+        .addEventListener("click", function () {
+          const message = document
+            .querySelector(".livre-d-or textarea")
+            .value.trim();
+          const phoneNumber = "243829225086"; // Remplacez par votre numéro
+
+          if (!message) {
+            alert("Veuillez écrire un message avant d'envoyer !");
+            return;
+          }
+
+          const name = prompt("Votre nom :") || "Anonyme";
+          const text = `📖 Message pour Gucci & Mutu 💞\n\n${message}\n\n— ${name}`;
+
+          window.open(
+            `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`,
+            "_blank"
+          );
+        });
+
+      // Carte interactive
+      document
+        .querySelector(".btn-map")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          window.open("https://goo.gl/maps/XXXXXXXXXXXX", "_blank");
+        });
+    </script>
+  </body>
+</html>
