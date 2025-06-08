@@ -19,6 +19,7 @@
         --text-color: #f5f6fa;
         --bg-dark: #2d3436;
         --transition: all 0.3s ease;
+        --border-radius: 12px;
       }
 
       @keyframes fadeIn {
@@ -80,6 +81,7 @@
         overflow: hidden;
       }
 
+      /* Style unifié pour toutes les sections */
       section {
         padding: 40px 20px;
         min-height: 100vh;
@@ -88,17 +90,31 @@
         justify-content: center;
         align-items: center;
         text-align: center;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+      }
+
+      section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(45, 52, 54, 0.8);
+        z-index: 0;
+      }
+
+      section > * {
+        position: relative;
+        z-index: 1;
       }
 
       /* Section Couple */
       .couple {
-        background: linear-gradient(
-            rgba(45, 52, 54, 0.7),
-            rgba(45, 52, 54, 0.7)
-          ),
-          url("assets/bg-couple.jpg") center/cover no-repeat;
-        text-align: center;
-        justify-content: space-between;
+        background: url("assets/bg-couple.jpg") center/cover no-repeat;
       }
 
       .couple h1 {
@@ -119,11 +135,7 @@
       }
 
       .conteneur-texte {
-        background: linear-gradient(
-            rgba(45, 52, 54, 0.8),
-            rgba(45, 52, 54, 0.8)
-          ),
-          url("assets/bg-1.jpg") center/cover no-repeat;
+        background: url("assets/bg-1.jpg") center/cover no-repeat;
       }
 
       .conteneur-texte header {
@@ -141,7 +153,7 @@
         margin: 15px 0;
         background-color: rgba(45, 52, 54, 0.85);
         border: 1px solid var(--love-light);
-        border-radius: 10px;
+        border-radius: var(--border-radius);
       }
 
       .texte p {
@@ -188,7 +200,7 @@
         gap: 8px;
         padding: 12px 24px;
         border: none;
-        border-radius: 8px;
+        border-radius: var(--border-radius);
         font-size: clamp(0.95rem, 3.5vw, 1.1rem);
         margin: 10px 0;
         width: auto;
@@ -221,11 +233,8 @@
 
       /* Section Livre d'or */
       .livre-d-or {
-        background: linear-gradient(
-            rgba(45, 52, 54, 0.8),
-            rgba(45, 52, 54, 0.8)
-          ),
-          url("assets/photo_2025-06-04_19-11-37.jpg") center/cover no-repeat;
+        background: url("assets/photo_2025-06-04_19-11-37.jpg") center/cover
+          no-repeat;
       }
 
       .livre-d-or h1 {
@@ -251,7 +260,7 @@
         padding: 15px;
         background-color: rgba(255, 255, 255, 0.1);
         border: 1px solid var(--love-light);
-        border-radius: 10px;
+        border-radius: var(--border-radius);
         color: var(--text-color);
         font-size: clamp(0.95rem, 3.5vw, 1.1rem);
         resize: vertical;
@@ -269,8 +278,71 @@
         opacity: 1;
       }
 
-      /* Optimisation mobile */
-      @media (max-width: 480px) {
+      /* Style amélioré pour les spans (étiquettes) */
+      span {
+        display: inline-block;
+        padding: 8px 16px;
+        margin: 6px;
+        background-color: rgba(255, 255, 255, 0.15);
+        border: 1px solid var(--love-light);
+        border-radius: var(--border-radius);
+        color: var(--text-color);
+        font-size: clamp(0.9rem, 3vw, 1.1rem);
+        transition: var(--transition);
+        cursor: pointer;
+        backdrop-filter: blur(5px);
+      }
+
+      span:hover {
+        background-color: var(--love-primary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Style spécifique pour les listes de préférences */
+      .liste-1,
+      .liste-2 {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 800px;
+        margin: 20px auto;
+      }
+
+      .liste-1 h2,
+      .liste-2 h2 {
+        width: 100%;
+        margin: 15px 0;
+        font-size: clamp(1.2rem, 4vw, 1.5rem);
+        color: var(--love-light);
+      }
+
+      /* Section Préférences */
+      .preference {
+        background: url("assets/paris.jpg") center/cover no-repeat;
+      }
+
+      .preference p {
+        max-width: 600px;
+        margin: 0 auto 20px;
+        font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+        line-height: 1.6;
+      }
+
+      .btn-preference {
+        background-color: var(--love-primary);
+        color: var(--text-color);
+        margin-top: 25px;
+        padding: 12px 30px;
+        font-weight: bold;
+      }
+
+      .btn-preference:hover {
+        background-color: var(--love-secondary);
+      }
+
+      /* Adaptations pour mobile */
+      @media (max-width: 768px) {
         section {
           padding: 30px 15px;
         }
@@ -288,6 +360,22 @@
         .livre-d-or textarea {
           min-height: 35vh;
           padding: 10px 12px;
+        }
+
+        span {
+          padding: 6px 12px;
+          margin: 4px;
+          font-size: 0.9rem;
+        }
+
+        .liste-1,
+        .liste-2 {
+          margin: 15px 0;
+        }
+
+        .liste-1 h2,
+        .liste-2 h2 {
+          margin: 10px 0;
         }
       }
 
@@ -363,6 +451,38 @@
         <h3>Laissez un petit mot au couple</h3>
         <textarea placeholder="Écrivez votre message ici..."></textarea>
         <button class="btn-whatsapp">💌 Envoyer via WhatsApp</button>
+      </section>
+
+      <section class="preference">
+        <h1>Vos préférences</h1>
+        <h3>Que désirez-vous boire ?</h3>
+        <p>
+          Aidez les mariés dans l'organisation de leur événement en leur
+          suggérant vos goûts de boissons
+        </p>
+
+        <div class="liste-1">
+          <h2>Boissons alcoolisées</h2>
+          <span>Catel</span>
+          <span>Beaufort</span>
+          <span>Primus</span>
+          <span>Tembo</span>
+          <span>Mutzig</span>
+          <span>Nkoyi</span>
+          <span>Likofi</span>
+          <span>Legend</span>
+          <span>Champagne</span>
+          <span>Vin</span>
+        </div>
+        <div class="liste-2">
+          <h2>Boissons non alcoolisées</h2>
+          <span>Coca</span>
+          <span>Fanta</span>
+          <span>Vitalo</span>
+          <span>Maltina</span>
+          <span>Energy Malt</span>
+        </div>
+        <button class="btn-preference">💖 Envoyer mes préférences</button>
       </section>
     </main>
 
@@ -517,6 +637,37 @@
         .addEventListener("click", function (e) {
           e.preventDefault();
           window.open("https://goo.gl/maps/XXXXXXXXXXXX", "_blank");
+        });
+
+      // Sélection des préférences
+      document.querySelectorAll("span").forEach((span) => {
+        span.addEventListener("click", function () {
+          this.classList.toggle("selected");
+        });
+      });
+
+      // Envoi des préférences
+      document
+        .querySelector(".btn-preference")
+        .addEventListener("click", function () {
+          const selectedItems = Array.from(
+            document.querySelectorAll("span.selected")
+          ).map((el) => el.textContent);
+
+          if (selectedItems.length === 0) {
+            alert("Veuillez sélectionner au moins une boisson !");
+            return;
+          }
+
+          const message = `🍷 Préférences boissons :\n\n${selectedItems.join(
+            "\n"
+          )}`;
+          const phoneNumber = "243829225086"; // Même numéro WhatsApp
+
+          window.open(
+            `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`,
+            "_blank"
+          );
         });
     </script>
   </body>
