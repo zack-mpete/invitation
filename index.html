@@ -81,6 +81,46 @@
         overflow: hidden;
       }
 
+      /* Animation des coeurs */
+      .hearts {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 99;
+        overflow: hidden;
+      }
+
+      .heart {
+        position: absolute;
+        font-size: 20px;
+        animation: fall linear forwards;
+        pointer-events: none;
+        user-select: none;
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        opacity: 0.8;
+        z-index: 1;
+      }
+
+      @keyframes fall {
+        0% {
+          transform: translateY(-10vh) translateX(0) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.8;
+        }
+        90% {
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateY(110vh) translateX(20px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
       /* Style unifié pour toutes les sections */
       section {
         padding: 40px 20px;
@@ -415,9 +455,11 @@
   </head>
   <body>
     <main>
+      <div class="hearts" id="hearts-container"></div>
       <section class="couple">
-        <h1>Gucci & Mutu 💞</h1>
-        <h2>1 mai 2026</h2>
+        <img src="#" alt="nom" />
+        <img src="#" alt="saveTheDate" />
+        <img src="#" alt="date" />
       </section>
 
       <section class="conteneur-texte">
@@ -491,6 +533,76 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script>
+      // Animation des coeurs adaptée au thème
+      function createFallingHearts() {
+        const heartsContainer = document.getElementById("hearts-container");
+        const heartSymbols = [
+          "🤍",
+          "🤍",
+          "🤍",
+          "🤍",
+          "🤍",
+          "🤍",
+          "🤍",
+          "🤍",
+          "🤍",
+          "🤍",
+          "🤍",
+          "🤍",
+          "🤍",
+          "🤍",
+        ];
+        const colors = [
+          "var(--love-primary)",
+          "var(--love-secondary)",
+          "var(--love-dark)",
+          "var(--love-light)",
+          "#e84393",
+          "#fd79a8",
+          "#c0392b",
+          "#ffeaa7",
+        ];
+
+        function createHeart() {
+          const heart = document.createElement("div");
+          heart.className = "heart";
+
+          // Symbole et couleur aléatoires
+          const randomSymbol =
+            heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+          heart.innerHTML = randomSymbol;
+          heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+          // Position aléatoire en haut
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.top = "-50px";
+
+          // Taille et durée aléatoires
+          const size = 12 + Math.random() * 25;
+          heart.style.fontSize = size + "px";
+          const duration = 5 + Math.random() * 10;
+          heart.style.animationDuration = duration + "s";
+
+          // Rotation aléatoire
+          heart.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+          heartsContainer.appendChild(heart);
+
+          // Suppression après animation
+          setTimeout(() => {
+            heart.remove();
+          }, duration * 1000);
+        }
+
+        // Créer des coeurs en continu
+        setInterval(createHeart, 300);
+
+        // Créer des coeurs initiaux
+        for (let i = 0; i < 15; i++) {
+          setTimeout(createHeart, i * 200);
+        }
+      }
+
       // Fonction pour afficher le loader
       function showLoader() {
         const loader = document.createElement("div");
@@ -511,7 +623,7 @@
         }
       }
 
-      // Solution PDF optimisée
+      // Génération PDF améliorée
       document
         .querySelector(".btn-download")
         .addEventListener("click", async function () {
@@ -519,41 +631,55 @@
           let timeout = setTimeout(() => {
             if (loader && loader.querySelector("p:last-child")) {
               loader.querySelector("p:last-child").textContent =
-                "La génération prend plus de temps que prévu... Veuillez patienter";
+                "Presque terminé...";
             }
-          }, 5000);
+          }, 3000);
 
           try {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF("p", "mm", "a4");
+            const padding = 10;
+            const pageWidth = doc.internal.pageSize.getWidth() - padding * 2;
 
-            // 1. Créer un clone du contenu
+            // 1. Créer un clone optimisé
             const element = document.querySelector("main");
             const clone = element.cloneNode(true);
-            clone.style.width = "210mm";
+
+            // Appliquer des styles spécifiques pour le PDF
+            clone.style.width = pageWidth + "mm";
+            clone.style.padding = "0";
             clone.style.position = "absolute";
             clone.style.left = "-9999px";
+            clone.style.backgroundColor = "var(--bg-dark)";
+
+            // Masquer les éléments inutiles pour le PDF
+            const hearts = clone.querySelector(".hearts");
+            if (hearts) hearts.style.display = "none";
+
             document.body.appendChild(clone);
 
-            // 2. Options avancées pour la capture
+            // 2. Options avancées pour html2canvas
             const options = {
-              scale: 2, // Qualité élevée
-              logging: true,
+              scale: 3, // Augmenter la qualité
+              logging: false,
               useCORS: true,
-              allowTaint: true,
               scrollX: 0,
               scrollY: 0,
               windowWidth: clone.scrollWidth,
               windowHeight: clone.scrollHeight,
+              backgroundColor: "#2d3436",
               onclone: (clonedDoc) => {
-                // Assure que tous les textes sont visibles
-                const texts = clonedDoc.querySelectorAll(
-                  "p, h1, h2, h3, span, div"
-                );
-                texts.forEach((text) => {
-                  text.style.opacity = "1";
-                  text.style.visibility = "visible";
+                // Forcer l'affichage de tous les éléments
+                const elements = clonedDoc.querySelectorAll("*");
+                elements.forEach((el) => {
+                  el.style.opacity = "1";
+                  el.style.visibility = "visible";
+                  el.style.animation = "none";
                 });
+
+                // Optimiser les styles pour le PDF
+                clonedDoc.body.style.overflow = "visible";
+                clonedDoc.body.style.height = "auto";
               },
             };
 
@@ -561,46 +687,55 @@
             const canvas = await html2canvas(clone, options);
             document.body.removeChild(clone);
 
-            // 4. Génération du PDF
-            const imgData = canvas.toDataURL("image/png", 1.0);
-            const pdfWidth = doc.internal.pageSize.getWidth();
-            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+            // 4. Calculer les dimensions pour le PDF
+            const imgData = canvas.toDataURL("image/jpeg", 0.9); // Format JPEG pour réduire la taille
+            const imgWidth = doc.internal.pageSize.getWidth() - padding * 2;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-            let heightLeft = pdfHeight;
-            let position = 0;
-            const pageHeight = doc.internal.pageSize.getHeight() - 20;
+            // 5. Découper l'image en pages si nécessaire
+            let heightLeft = imgHeight;
+            let position = padding;
+            const pageHeight = doc.internal.pageSize.getHeight() - padding * 2;
 
             doc.addImage(
               imgData,
-              "PNG",
-              10,
+              "JPEG",
+              padding,
               position,
-              pdfWidth - 20,
-              pdfHeight
+              imgWidth,
+              imgHeight
             );
             heightLeft -= pageHeight;
 
-            // Ajout de pages supplémentaires si nécessaire
+            // Ajouter des pages supplémentaires si le contenu est trop long
             while (heightLeft >= 0) {
-              position = heightLeft - pdfHeight;
+              position = heightLeft - imgHeight;
               doc.addPage();
               doc.addImage(
                 imgData,
-                "PNG",
-                10,
+                "JPEG",
+                padding,
                 position,
-                pdfWidth - 20,
-                pdfHeight
+                imgWidth,
+                imgHeight
               );
               heightLeft -= pageHeight;
             }
 
-            // 5. Sauvegarde
+            // 6. Ajouter des métadonnées
+            doc.setProperties({
+              title: "Invitation Mariage Gucci & Mutu",
+              subject: "Invitation au mariage",
+              author: "Gucci & Mutu",
+              keywords: "mariage, invitation, gucci, mutu",
+            });
+
+            // 7. Sauvegarder le PDF
             doc.save("Invitation_Gucci_Mutu.pdf");
           } catch (error) {
             console.error("Erreur de génération PDF:", error);
             alert(
-              "Erreur lors de la génération du PDF. Veuillez réessayer ou vérifier votre connexion."
+              "Une erreur est survenue. Veuillez réessayer ou contacter les mariés."
             );
           } finally {
             clearTimeout(timeout);
@@ -668,7 +803,43 @@
             `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`,
             "_blank"
           );
+
+          // Animation spéciale de coeurs
+          const heartsContainer = document.getElementById("hearts-container");
+          for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+              const heart = document.createElement("div");
+              heart.className = "heart";
+              heart.innerHTML = "❤️";
+              heart.style.color = "var(--love-primary)";
+              heart.style.left = Math.random() * 100 + "vw";
+              heart.style.top = "-20px";
+              heart.style.fontSize = 15 + Math.random() * 25 + "px";
+              heart.style.animationDuration = 2 + Math.random() * 3 + "s";
+              heartsContainer.appendChild(heart);
+
+              setTimeout(() => {
+                heart.remove();
+              }, 5000);
+            }, i * 100);
+          }
         });
+
+      // Démarrer les animations au chargement
+      document.addEventListener("DOMContentLoaded", () => {
+        createFallingHearts();
+
+        // Désactiver les animations lors de la génération du PDF
+        document
+          .querySelector(".btn-download")
+          .addEventListener("click", () => {
+            const heartsContainer = document.getElementById("hearts-container");
+            heartsContainer.style.display = "none";
+            setTimeout(() => {
+              heartsContainer.style.display = "block";
+            }, 5000);
+          });
+      });
     </script>
   </body>
 </html>
