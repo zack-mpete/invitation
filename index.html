@@ -81,26 +81,14 @@
         overflow: hidden;
       }
 
-      /* Animation des coeurs */
-      .hearts {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 99;
-        overflow: hidden;
-      }
-
       .heart {
         position: absolute;
-        font-size: 20px;
+        font-size: 40px;
         animation: fall linear forwards;
         pointer-events: none;
         user-select: none;
-        text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-        opacity: 0.8;
+        color: #c33232e7;
+        opacity: 0.5;
         z-index: 1;
       }
 
@@ -110,18 +98,17 @@
           opacity: 0;
         }
         10% {
-          opacity: 0.8;
+          opacity: 0.5;
         }
         90% {
-          opacity: 0.8;
+          opacity: 0.5;
         }
         100% {
-          transform: translateY(110vh) translateX(20px) rotate(360deg);
+          transform: translateY(400vh) translateX(20px) rotate(360deg);
           opacity: 0;
         }
       }
 
-      /* Style unifié pour toutes les sections */
       section {
         padding: 40px 20px;
         min-height: 100vh;
@@ -152,7 +139,6 @@
         z-index: 1;
       }
 
-      /* Section Couple */
       .couple {
         background: url("assets/bg-couple.jpg") center/cover no-repeat;
       }
@@ -229,7 +215,6 @@
         font-size: 2rem;
       }
 
-      /* Boutons */
       button,
       .btn {
         cursor: pointer;
@@ -271,7 +256,6 @@
         box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
       }
 
-      /* Section Livre d'or */
       .livre-d-or {
         background: url("assets/photo_2025-06-04_19-11-37.jpg") center/cover
           no-repeat;
@@ -318,7 +302,6 @@
         opacity: 1;
       }
 
-      /* Style amélioré pour les spans (étiquettes) */
       span {
         display: inline-block;
         padding: 8px 16px;
@@ -338,8 +321,6 @@
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       }
-
-      /* Style spécifique pour les listes de préférences */
       .liste-1,
       .liste-2 {
         display: flex;
@@ -357,7 +338,6 @@
         color: var(--love-light);
       }
 
-      /* Section Préférences */
       .preference {
         background: url("assets/paris.jpg") center/cover no-repeat;
       }
@@ -381,7 +361,6 @@
         background-color: var(--love-secondary);
       }
 
-      /* Adaptations pour mobile */
       @media (max-width: 768px) {
         section {
           padding: 30px 15px;
@@ -419,7 +398,6 @@
         }
       }
 
-      /* Style pour le loader */
       .pdf-loader {
         position: fixed;
         top: 0;
@@ -451,15 +429,47 @@
           transform: rotate(360deg);
         }
       }
+      img {
+        max-height: 40px;
+        width: auto;
+      }
+      .couple-img {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 70vh;
+        animation: images 2s;
+      }
+      @keyframes images {
+        0% {
+          opacity: -2;
+          size: 10px;
+          transform: translateY(-100vh);
+        }
+        100% {
+          transform: translateY();
+        }
+      }
     </style>
   </head>
   <body>
     <main>
       <div class="hearts" id="hearts-container"></div>
       <section class="couple">
-        <img src="#" alt="nom" />
-        <img src="#" alt="saveTheDate" />
-        <img src="#" alt="date" />
+        <div class="couple-img">
+          <div class="noms">
+            <img
+              src="assets/fe3eb99ce7ac3f733eb60d188b423caa.png"
+              alt="nom"
+              class="nom"
+            />
+
+            <img src="assets/Screenshot_20250612-110503_Gallery.png" alt="" />
+          </div>
+
+          <img src="" alt="saveTheDate" class="saveTheDate" />
+          <img src="#" alt="date" class="date" />
+        </div>
       </section>
 
       <section class="conteneur-texte">
@@ -505,7 +515,7 @@
 
         <div class="liste-1">
           <h2>Boissons alcoolisées</h2>
-          <span>Catel</span>
+          <span>Castel</span>
           <span>Beaufort</span>
           <span>Primus</span>
           <span>Tembo</span>
@@ -533,77 +543,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script>
-      // Animation des coeurs adaptée au thème
       function createFallingHearts() {
         const heartsContainer = document.getElementById("hearts-container");
-        const heartSymbols = [
-          "🤍",
-          "🤍",
-          "🤍",
-          "🤍",
-          "🤍",
-          "🤍",
-          "🤍",
-          "🤍",
-          "🤍",
-          "🤍",
-          "🤍",
-          "🤍",
-          "🤍",
-          "🤍",
-        ];
-        const colors = [
-          "var(--love-primary)",
-          "var(--love-secondary)",
-          "var(--love-dark)",
-          "var(--love-light)",
-          "#e84393",
-          "#fd79a8",
-          "#c0392b",
-          "#ffeaa7",
-        ];
 
         function createHeart() {
           const heart = document.createElement("div");
           heart.className = "heart";
+          heart.innerHTML = "❤";
 
-          // Symbole et couleur aléatoires
-          const randomSymbol =
-            heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
-          heart.innerHTML = randomSymbol;
-          heart.style.color = colors[Math.floor(Math.random() * colors.length)];
-
-          // Position aléatoire en haut
           heart.style.left = Math.random() * 100 + "vw";
           heart.style.top = "-50px";
 
-          // Taille et durée aléatoires
-          const size = 12 + Math.random() * 25;
+          const size = 10 + Math.random() * 15;
           heart.style.fontSize = size + "px";
-          const duration = 5 + Math.random() * 10;
-          heart.style.animationDuration = duration + "s";
 
-          // Rotation aléatoire
-          heart.style.transform = `rotate(${Math.random() * 360}deg)`;
+          const duration = 8 + Math.random() * 70;
+          heart.style.animationDuration = duration + "s";
 
           heartsContainer.appendChild(heart);
 
-          // Suppression après animation
           setTimeout(() => {
             heart.remove();
           }, duration * 1000);
         }
 
-        // Créer des coeurs en continu
-        setInterval(createHeart, 300);
+        setInterval(createHeart, 800);
 
-        // Créer des coeurs initiaux
-        for (let i = 0; i < 15; i++) {
-          setTimeout(createHeart, i * 200);
+        for (let i = 0; i < 10; i++) {
+          setTimeout(createHeart, i * 500);
         }
       }
 
-      // Fonction pour afficher le loader
       function showLoader() {
         const loader = document.createElement("div");
         loader.className = "pdf-loader";
@@ -616,14 +586,12 @@
         return loader;
       }
 
-      // Fonction pour cacher le loader
       function hideLoader(loader) {
         if (loader && loader.parentNode) {
           loader.parentNode.removeChild(loader);
         }
       }
 
-      // Génération PDF améliorée
       document
         .querySelector(".btn-download")
         .addEventListener("click", async function () {
@@ -641,26 +609,22 @@
             const padding = 10;
             const pageWidth = doc.internal.pageSize.getWidth() - padding * 2;
 
-            // 1. Créer un clone optimisé
             const element = document.querySelector("main");
             const clone = element.cloneNode(true);
 
-            // Appliquer des styles spécifiques pour le PDF
             clone.style.width = pageWidth + "mm";
             clone.style.padding = "0";
             clone.style.position = "absolute";
             clone.style.left = "-9999px";
             clone.style.backgroundColor = "var(--bg-dark)";
 
-            // Masquer les éléments inutiles pour le PDF
             const hearts = clone.querySelector(".hearts");
             if (hearts) hearts.style.display = "none";
 
             document.body.appendChild(clone);
 
-            // 2. Options avancées pour html2canvas
             const options = {
-              scale: 3, // Augmenter la qualité
+              scale: 3,
               logging: false,
               useCORS: true,
               scrollX: 0,
@@ -669,7 +633,6 @@
               windowHeight: clone.scrollHeight,
               backgroundColor: "#2d3436",
               onclone: (clonedDoc) => {
-                // Forcer l'affichage de tous les éléments
                 const elements = clonedDoc.querySelectorAll("*");
                 elements.forEach((el) => {
                   el.style.opacity = "1";
@@ -677,22 +640,18 @@
                   el.style.animation = "none";
                 });
 
-                // Optimiser les styles pour le PDF
                 clonedDoc.body.style.overflow = "visible";
                 clonedDoc.body.style.height = "auto";
               },
             };
 
-            // 3. Capture avec html2canvas
             const canvas = await html2canvas(clone, options);
             document.body.removeChild(clone);
 
-            // 4. Calculer les dimensions pour le PDF
             const imgData = canvas.toDataURL("image/jpeg", 0.9); // Format JPEG pour réduire la taille
             const imgWidth = doc.internal.pageSize.getWidth() - padding * 2;
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-            // 5. Découper l'image en pages si nécessaire
             let heightLeft = imgHeight;
             let position = padding;
             const pageHeight = doc.internal.pageSize.getHeight() - padding * 2;
@@ -707,7 +666,6 @@
             );
             heightLeft -= pageHeight;
 
-            // Ajouter des pages supplémentaires si le contenu est trop long
             while (heightLeft >= 0) {
               position = heightLeft - imgHeight;
               doc.addPage();
@@ -743,7 +701,6 @@
           }
         });
 
-      // Envoyer message WhatsApp
       document
         .querySelector(".btn-whatsapp")
         .addEventListener("click", function () {
@@ -804,7 +761,6 @@
             "_blank"
           );
 
-          // Animation spéciale de coeurs
           const heartsContainer = document.getElementById("hearts-container");
           for (let i = 0; i < 30; i++) {
             setTimeout(() => {
@@ -825,11 +781,9 @@
           }
         });
 
-      // Démarrer les animations au chargement
       document.addEventListener("DOMContentLoaded", () => {
         createFallingHearts();
 
-        // Désactiver les animations lors de la génération du PDF
         document
           .querySelector(".btn-download")
           .addEventListener("click", () => {
